@@ -1,0 +1,319 @@
+.header__logo-link {
+  display: block;
+}
+
+.header__search-input {
+  border-radius: 20px;
+  padding: 8px 15px;
+  border: 1px solid #ccc;
+}
+
+.header__search-button {
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-left: 10px;
+}
+
+.header__search-button:hover {
+  background-color: #0056b3;
+}
+
+.trainer-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.trainer-card__figure {
+  margin: 0 0 15px 0;
+}
+
+.trainer-card__image {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #28a745;
+}
+
+.trainer-card__name {
+  color: #28a745;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.trainer-card__specialization,
+.trainer-card__experience,
+.trainer-card__location,
+.trainer-card__cost {
+  margin-bottom: 5px;
+}
+
+.trainer-card__link {
+  margin-top: 15px;
+  display: inline-block;
+  color: #007bff;
+}
+
+.filter-sidebar__heading,
+.sort-options__heading {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.filter-form__fieldset {
+  margin-bottom: 15px;
+}
+
+.filter-form__label {
+  margin-right: 10px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.filter-form__input[type="radio"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+.filter-form__select,
+.filter-form__input[type="number"] {
+  margin-bottom: 10px;
+}
+
+.filter-form__button,
+.sort-options__button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.reviews {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.reviews__heading {
+  text-align: center;
+  color: #28a745;
+  margin-bottom: 25px;
+}
+
+.review-item {
+  border-bottom: 1px dashed #e0e0e0;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.review-item__title {
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.review-item__author,
+.review-item__rating {
+  font-size: 0.9rem;
+  color: #666666;
+  margin-bottom: 5px;
+}
+
+.booking {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.booking__heading {
+  text-align: center;
+  color: #28a745;
+  margin-bottom: 25px;
+}
+
+.booking-form__label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.booking-form__input,
+.booking-form__select,
+.booking-form__textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+}
+
+.booking-form__button {
+  width: auto;
+  margin-top: 10px;
+}
+
+.trainer-profile {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.trainer-profile__heading {
+  color: #28a745;
+  margin-bottom: 25px;
+}
+
+.trainer-profile__figure {
+  margin: 0 auto 20px auto;
+}
+
+.trainer-profile__image {
+  border-radius: 8px;
+  border: 3px solid #007bff;
+  object-fit: cover;
+}
+
+.trainer-profile__name {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.trainer-profile__specialization,
+.trainer-profile__experience,
+.trainer-profile__education {
+  margin-bottom: 5px;
+}
+
+.trainer-profile__contacts-heading,
+.trainer-profile__schedule-heading,
+.trainer-profile__reviews-heading {
+  color: #2c3e50;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.trainer-profile__contact-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+}
+
+.trainer-profile__contact-item {
+  margin-bottom: 5px;
+}
+
+.trainer-profile__contact-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.trainer-profile__contact-link .fab {
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+.trainer-profile__quote {
+  background-color: #f9f9f9;
+  border-left: 5px solid #28a745;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.trainer-profile__quote-text {
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.trainer-profile__quote-cite {
+  display: block;
+  text-align: right;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.trainer-profile__book-button {
+  margin-top: 20px;
+}
+
+.articles {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.articles__heading {
+  text-align: center;
+  color: #28a745;
+  margin-bottom: 25px;
+}
+
+.article-item {
+  border-bottom: 1px dashed #e0e0e0;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.article-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.article-item__title {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.article-item__text {
+  margin-bottom: 10px;
+}
+
+.article-item__link {
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.footer__navigation-list,
+.footer__social-list,
+.footer__team-list {
+  list-style: none;
+  padding: 0;
+}
+
+.footer__navigation-link,
+.footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.footer__social-link .fab {
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
+.footer__team-heading {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.footer__copyright {
+  font-size: 0.8rem;
+  color: #888888;
+}

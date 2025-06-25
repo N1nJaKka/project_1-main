@@ -1,0 +1,155 @@
+@import url('fonts.css');
+@import url('base.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('preloader.css');
+
+.preloader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.preloader--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.content {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.content--hidden {
+  opacity: 0;
+}
+
+.scroll-to-top-btn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.scroll-to-top-btn:hover {
+  background-color: #0056b3;
+}
+
+.trainer-titles-section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.trainer-titles-section__heading {
+  text-align: center;
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.trainer-titles-list {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.trainer-titles-list__item {
+  margin-bottom: 5px;
+}
+
+.swiper-container {
+  width: 100%;
+  height: auto;
+  padding-bottom: 40px;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .swiper-slide {
+    height: auto;
+  }
+}
+
+.section-padding {
+  padding: 60px 20px;
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.section-padding h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+}
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+.contact-info p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.contact-info i {
+  color: #007bff;
+  font-size: 1.2em;
+}
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  text-align: justify;
+}
+.about-content h3 {
+  color: #28a745;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}

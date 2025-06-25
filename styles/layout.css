@@ -1,0 +1,150 @@
+body {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.header__logo {
+  margin-right: 20px;
+}
+
+.header__navigation {
+  flex-grow: 1;
+}
+
+.header__navigation-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.header__navigation-item {
+  margin-right: 20px;
+}
+
+.header__search {
+  display: flex;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  flex-wrap: wrap; /* Разрешает элементам переноситься на новую строку */
+  gap: 30px; /* Отступ между колонками */
+  padding: 30px 0;
+  justify-content: center; /* Центрирует элементы в строке, если они не занимают всю ширину */
+  align-items: flex-start; /* Выравнивает элементы по верху */
+}
+
+.filter-sidebar {
+  flex: 0 0 300px; /* Не растягивается, не сжимается, базовая ширина 300px */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: fit-content; /* Высота по содержимому */
+  box-sizing: border-box; /* Учитываем padding в общей ширине */
+  position: relative; /* Важно: для корректной работы z-index */
+  z-index: 10; /* Убедитесь, что боковая панель фильтров находится поверх других элементов */
+}
+
+.trainers {
+  flex: 1 1 calc(100% - 330px); /* Гибкий элемент, занимает оставшееся пространство минус 300px сайдбара и 30px gap */
+  min-width: 320px; /* Минимальная ширина для секции тренеров перед тем, как произойдет перенос */
+  box-sizing: border-box;
+  overflow: hidden; /* Важно: скрывает содержимое, которое выходит за границы элемента */
+  position: relative; /* Важно: для создания контекста наложения для дочерних элементов */
+  z-index: 5; /* Ниже, чем filter-sidebar, чтобы sidebar был сверху */
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 30px 0;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 30px;
+  font-size: 0.9rem;
+  color: #666666;
+}
+
+.footer__navigation-list,
+.footer__social-list,
+.footer__team-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer__navigation-item,
+.footer__social-item,
+.footer__team-member {
+  margin-bottom: 5px;
+}
+
+.footer__navigation,
+.footer__social,
+.footer__team {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 20px;
+}
+
+.footer__copyright {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header__navigation {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .header__navigation-list {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header__navigation-item {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .header__search {
+    width: 100%;
+    margin-top: 15px;
+    justify-content: center;
+  }
+
+  .main {
+    flex-direction: column; /* Элементы .filter-sidebar и .trainers будут располагаться вертикально */
+    align-items: center; /* Центрируем элементы при вертикальном расположении */
+  }
+
+  .filter-sidebar,
+  .trainers {
+    flex-basis: 100%; /* Занимают всю доступную ширину */
+    max-width: 500px; /* Ограничиваем максимальную ширину для лучшей читаемости на небольших экранах */
+    margin-bottom: 20px; /* Отступ между элементами, когда они stacked */
+  }
+}
