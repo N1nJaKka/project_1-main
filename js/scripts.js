@@ -65,43 +65,47 @@ document.addEventListener('DOMContentLoaded', function() {
     const trainerCardsContainer = document.getElementById('trainer-cards-container');
     const trainerTitlesList = document.getElementById('trainer-titles-list');
     let allTrainerCardsData = [];
+    let allReviewsData = [];
 
-    // Эта функция не будет использоваться, так как изображения теперь заданы в data.json
     async function generateImageForTrainer(trainerName, specialization) {
         const placeholderText = encodeURIComponent(trainerName.split(' ')[0] || 'Тренер');
         return `https://placehold.co/150x150/ef4444/ffffff?text=${placeholderText}`;
     }
 
-    async function loadTrainers() {
-        console.log("Начинаем загрузку данных о тренерах...");
+    async function loadData() {
+        console.log("Начинаем загрузку данных...");
         try {
-            // Исправленный путь к data.json для локальной работы (одна папка вверх от js/)
             const response = await fetch('../data.json'); 
             if (!response.ok) {
-                // В случае локального доступа fetch.ok может быть false, но данные могут быть прочитаны
-                // Для локальных файлов ERR_FILE_NOT_FOUND и CORS могут быть проблемой,
-                // поэтому важно запускать через Live Server.
                 console.warn("Ошибка при загрузке data.json: Проверьте путь и запуск через локальный сервер.", response.status, response.statusText);
-                // Попробуем прочитать тело ответа, даже если !response.ok
                 try {
-                    allTrainerCardsData = await response.json();
-                    console.log("Данные загружены, несмотря на !response.ok (возможно, из-за CORS/file:// протокола):", allTrainerCardsData);
+                    const data = await response.json();
+                    allTrainerCardsData = data.filter(item => item.id.startsWith('trainer'));
+                    allReviewsData = data.filter(item => item.id.startsWith('review'));
+                    console.log("Данные загружены, несмотря на !response.ok:", { allTrainerCardsData, allReviewsData });
                 } catch (jsonError) {
                     throw new Error(`Не удалось распарсить JSON: ${jsonError.message}`);
                 }
             } else {
-                allTrainerCardsData = await response.json();
-                console.log("Данные успешно загружены из data.json:", allTrainerCardsData);
+                const data = await response.json();
+                allTrainerCardsData = data.filter(item => item.id.startsWith('trainer'));
+                allReviewsData = data.filter(item => item.id.startsWith('review'));
+                console.log("Данные успешно загружены из data.json:", { allTrainerCardsData, allReviewsData });
             }
 
             await renderTrainerCards(allTrainerCardsData);
             extractAndDisplayTrainerTitles(allTrainerCardsData);
             initializeSwiper();
+            renderReviews(allReviewsData, allTrainerCardsData);
 
         } catch (error) {
-            console.error("Критическая ошибка при загрузке или обработке данных о тренерах:", error);
+            console.error("Критическая ошибка при загрузке или обработке данных:", error);
             if (trainerCardsContainer) {
                 trainerCardsContainer.innerHTML = `<p>Не удалось загрузить информацию о тренерах. Пожалуйста, попробуйте позже. Ошибка: ${error.message}</p>`;
+            }
+            const reviewsContainer = document.getElementById('reviews-container');
+            if (reviewsContainer) {
+                reviewsContainer.innerHTML = `<p>Не удалось загрузить информацию об отзывах. Пожалуйста, попробуйте позже. Ошибка: ${error.message}</p>`;
             }
         }
     }
@@ -129,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
             trainerCard.setAttribute('data-experience', trainer.experience);
 
             let imageUrl = trainer.image;
-            // Если изображение не указано в data.json или путь некорректен, используем заглушку
             if (!imageUrl) { 
                 const placeholderText = encodeURIComponent(trainer.name.split(' ')[0] || 'Тренер');
                 imageUrl = `https://placehold.co/150x150/ef4444/ffffff?text=${placeholderText}`; 
@@ -175,6 +178,57 @@ document.addEventListener('DOMContentLoaded', function() {
             trainerTitlesList.appendChild(listItem);
         }
         console.log("Список имен тренеров обновлен.");
+    }
+
+    const reviewsContainer = document.getElementById('reviews-container');
+
+    function renderReviews(reviews, trainers) {
+        if (!reviewsContainer) {
+            console.error("Элемент reviews-container не найден.");
+            return;
+        }
+
+        reviewsContainer.innerHTML = '';
+        console.log("Рендеринг отзывов. Количество:", reviews.length);
+
+        if (reviews.length === 0) {
+            reviewsContainer.innerHTML = '<p>Отзывов пока нет.</p>';
+            return;
+        }
+
+        reviews.forEach(review => {
+            const trainer = trainers.find(t => t.id === review.trainerId);
+            const trainerName = trainer ? trainer.name : 'Неизвестный тренер';
+
+            const reviewCard = document.createElement('div');
+            reviewCard.classList.add('review-card');
+
+            let starsHtml = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < review.rating) {
+                    starsHtml += '<i class="fas fa-star"></i>';
+                } else {
+                    starsHtml += '<i class="far fa-star"></i>';
+                }
+            }
+
+            reviewCard.innerHTML = `
+                <div class="review-card__header">
+                    <div class="review-card__user-info">
+                        <i class="fas fa-user-circle review-card__user-icon"></i>
+                        <span class="review-card__user-name">${review.userName}</span>
+                    </div>
+                    <div class="review-card__rating">${starsHtml}</div>
+                </div>
+                <p class="review-card__text">${review.text}</p>
+                <div class="review-card__footer">
+                    <span class="review-card__trainer-name">Тренер: ${trainerName}</span>
+                    <span class="review-card__date">${review.date}</span>
+                </div>
+            `;
+            reviewsContainer.appendChild(reviewCard);
+        });
+        console.log("Рендеринг отзывов завершен.");
     }
 
     const popularArticlesContainer = document.getElementById('articles-container');
@@ -243,17 +297,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let mySwiper;
 
     function initializeSwiper() {
-        // Проверяем, существует ли уже экземпляр Swiper
         if (mySwiper) {
-            mySwiper.destroy(true, true); // Уничтожаем существующий экземпляр
-            mySwiper = null; // Сбрасываем ссылку
+            mySwiper.destroy(true, true);
+            mySwiper = null;
             console.log("Существующий экземпляр Swiper уничтожен.");
         }
 
-        // Инициализируем Swiper только если есть карточки тренеров и swiper-container существует
         const swiperContainer = document.querySelector('.swiper-container');
         if (swiperContainer && trainerCardsContainer && trainerCardsContainer.children.length > 0) {
-            mySwiper = new Swiper(swiperContainer, { // Передаем элемент, а не селектор повторно
+            mySwiper = new Swiper(swiperContainer, {
                 loop: true,
                 slidesPerView: 1,
                 spaceBetween: 20,
@@ -265,9 +317,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 },
-                // scrollbar: { // Закомментировано, если скроллбар не нужен
-                //     el: '.swiper-scrollbar',
-                // },
                 breakpoints: {
                     640: {
                         slidesPerView: 2,
@@ -278,8 +327,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         spaceBetween: 40
                     }
                 },
-                observer: true, // Включаем observer
-                observeParents: true // Включаем observeParents
+                observer: true,
+                observeParents: true
             });
             console.log("Swiper инициализирован.");
         } else {
@@ -291,19 +340,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (searchButton) {
         searchButton.addEventListener('click', function(event) {
             console.log("Кнопка поиска нажата (логика пока не реализована).");
-            // Логика поиска, если она будет добавлена
         });
     }
 
     if (applyFiltersButton) {
         applyFiltersButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            event.preventDefault();
             console.log("Кнопка 'Применить фильтры' нажата. Применяем фильтры...");
 
             const selectedSpecialization = specializationSelect ? specializationSelect.value : '';
             const selectedExperience = Array.from(experienceFilters).find(radio => radio.checked)?.value || 'any';
             const selectedLocation = locationFilter ? locationFilter.value : '';
-            // Проверяем, что значение не пустая строка перед парсингом
             const minCost = costMinFilter && costMinFilter.value !== '' ? parseFloat(costMinFilter.value) : 0;
             const maxCost = costMaxFilter && costMaxFilter.value !== '' ? parseFloat(costMaxFilter.value) : Infinity;
 
@@ -315,23 +362,14 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("  Максимальная стоимость:", maxCost);
 
             const filteredTrainers = allTrainerCardsData.filter(trainer => {
-                // console.log("  Проверяем тренера:", trainer.name); // Закомментировано для меньшего спама в консоли
-
                 const matchesSpecialization = selectedSpecialization === '' || trainer.specialization.includes(selectedSpecialization);
-                // console.log("    matchesSpecialization:", matchesSpecialization, "(Выбрано:", selectedSpecialization, ", Тренер:", trainer.specialization, ")");
-
                 const matchesLocation = selectedLocation === '' || trainer.location === selectedLocation;
-                // console.log("    matchesLocation:", matchesLocation, "(Выбрано:", selectedLocation, ", Тренер:", trainer.location, ")");
-
                 const matchesCost = trainer.cost >= minCost && trainer.cost <= maxCost;
-                // console.log("    matchesCost:", matchesCost, "(Мин:", minCost, ", Макс:", maxCost, ", Тренер:", trainer.cost, ")");
 
                 let matchesExperience = true;
                 if (selectedExperience !== 'any') {
-                    // Используем регулярное выражение для более надежного извлечения числа из строки "N лет"
                     const trainerExpValueMatch = trainer.experience.match(/\d+/);
                     const trainerExpYears = trainerExpValueMatch ? parseInt(trainerExpValueMatch[0], 10) : 0;
-                    // console.log("    Опыт тренера (парсинг):", trainer.experience, "->", trainerExpYears, "лет");
                     
                     if (selectedExperience === '1-3') {
                         matchesExperience = (trainerExpYears >= 1 && trainerExpYears <= 3);
@@ -341,16 +379,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         matchesExperience = (trainerExpYears >= 5);
                     }
                 }
-                // console.log("    matchesExperience:", matchesExperience, "(Выбрано:", selectedExperience, ")");
-
-                const finalMatch = matchesSpecialization && matchesLocation && matchesCost && matchesExperience;
-                // console.log("    Финальный результат для", trainer.name, ":", finalMatch);
-                return finalMatch;
+                return matchesSpecialization && matchesLocation && matchesCost && matchesExperience;
             });
 
             console.log("Отфильтрованные тренеры. Количество:", filteredTrainers.length, filteredTrainers);
             renderTrainerCards(filteredTrainers);
-            initializeSwiper(); // Повторная инициализация Swiper после фильтрации
+            initializeSwiper();
         });
     }
 
@@ -407,6 +441,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    loadTrainers();
+    loadData();
     renderPopularArticles();
 });
